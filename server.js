@@ -27,7 +27,7 @@ const runServer = async () => {
          @POST /login - login user 
          @GET /current - current user (requirement: auth token bearer)
          @POST /logout - logout user (requirement: auth token bearer)
-`
+      `
       );
     });
   } catch (err) {
