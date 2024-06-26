@@ -1,23 +1,23 @@
-import { User } from '../schemas/user.schema.js'
-import bcrypt from 'bcryptjs'
-import gravatar from 'gravatar'
-import { nanoid } from 'nanoid'
-import jwt from 'jsonwebtoken'
+import { User } from "../schemas/user.schema.js";
+import bcrypt from "bcryptjs";
+import gravatar from "gravatar";
+import jwt from "jsonwebtoken";
+import { generateVerificationKey, sendEmail } from "../utils/nodemailer.js";
 
 // Register user
 export const registerUser = async (data) => {
-  const { name, password, email } = data
+  const { name, password, email } = data;
 
-  const salt = await bcrypt.genSalt(10)
-  const hashPassword = await bcrypt.hash(password, salt)
-  const avatarURL = gravatar.url(email, { protocol: 'https' })
-  const verificationToken = nanoid()
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(password, salt);
+  const avatarURL = gravatar.url(email, { protocol: "https" });
+  const verificationToken = generateVerificationKey();
 
   //find an existing user
-  const checkUser = await User.findOne({ email })
+  const checkUser = await User.findOne({ email });
 
   if (checkUser) {
-    return { error: `User already registered` }
+    return { error: `User already registered` };
   }
 
   const user = new User({
@@ -27,54 +27,55 @@ export const registerUser = async (data) => {
     avatarURL,
     verify: false,
     verificationToken,
-  })
-  await user.save()
+  });
+  await user.save();
+  await sendEmail(name, email, verificationToken);
 
-  return user
-}
+  return user;
+};
 
 // Login
 export const loginUser = async (data) => {
-  const { password, email } = data
-  const user = await User.findOne({ email })
+  const { password, email } = data;
+  const user = await User.findOne({ email });
 
   if (!user) {
     return {
-      error: 'User probably does not exist, check the correctness of the data',
-    }
+      error: "User probably does not exist, check the correctness of the data",
+    };
   }
 
-  const passwordCompare = await bcrypt.compare(password, user.password)
+  const passwordCompare = await bcrypt.compare(password, user.password);
 
   // Login auth error
   if (!user || !passwordCompare) {
-    return { error: 'Email or password is wrong' }
+    return { error: "Email or password is wrong" };
   }
 
   // Login success response
   const payload = {
     id: user._id,
-  }
+  };
 
-  const { TOKEN_KEY } = process.env
+  const { TOKEN_KEY } = process.env;
 
-  const token = jwt.sign(payload, TOKEN_KEY, { expiresIn: '7d' })
-  await User.findByIdAndUpdate(user._id, { token })
-  return { user, token }
-}
+  const token = jwt.sign(payload, TOKEN_KEY, { expiresIn: "7d" });
+  await User.findByIdAndUpdate(user._id, { token });
+  return { user, token };
+};
 
 // Logout
 export const logoutUser = async (id) => {
-  await User.findByIdAndUpdate({ _id: id }, { token: null }, { new: true })
-  return
-}
+  await User.findByIdAndUpdate({ _id: id }, { token: null }, { new: true });
+  return;
+};
 
 // user logged
 export const currentUser = async (id) => {
-  const user = await User.findById(id)
+  const user = await User.findById(id);
 
   if (!user) {
-    return { error: 'Unauthorized' }
+    return { error: "Unauthorized" };
   }
-  return {user}
-}
+  return { user };
+};
