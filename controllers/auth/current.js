@@ -11,7 +11,7 @@ export const current = async (req, res, next) => {
       return next(ApiError.unauthorized(loggedUser.error));
     }
 
-    const { email, subscription, name, avatarURL } = loggedUser.user;
+    const { email, isInstructor, name, avatarURL } = loggedUser.user;
 
     // Current user success response
     return res.status(200).json({
@@ -19,7 +19,7 @@ export const current = async (req, res, next) => {
       status: `OK`,
       ResponseBody: {
         email: email,
-        subscription: subscription,
+        isInstructor: isInstructor,
         name: name,
         avatarURL: avatarURL,
       },

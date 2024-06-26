@@ -22,7 +22,7 @@ const userSchema = new Schema({
     minlength: 3,
     required: [true, "Set password for user"],
   },
-  subscription: {
+  isInstructor: {
     type: String,
     default: null,
   },
@@ -101,11 +101,10 @@ export const subscribeSchema = Joi.object({
  *           type: string
  *           format: password
  *           description: User password
- *         subscription:
+ *         isInstructor:
  *           type: string,
  *           nullable: true,
- *           description: User email subscription,
- *           format: email,
+ *           description: Defines wether the user is instructor,
  *         token:
  *           type: string
  *           description: JSON token
