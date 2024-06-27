@@ -63,6 +63,14 @@ export const subscribeSchema = Joi.object({
   }),
 });
 
+export const resetPasswordSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    "string.pattern.base": "Email format is: example@example.com",
+  }),
+  password: Joi.string().min(3).required(),
+  newPassword: Joi.string().min(3).required(),
+});
+
 /**
  * @openapi
  * components:
@@ -147,4 +155,33 @@ export const subscribeSchema = Joi.object({
  *         avatar:
  *           type: string
  *           description: User avatar
+ *
+ *    changePasswordRequest:
+ *      type: object
+ *         required:
+ *           - email
+ *          - oldPassword
+ *          - newPassword
+ *        properties:
+ *           email:
+ *           type: string
+ *           format: email
+ *           description: User email
+ *       oldPassword:
+ *            type: string
+ *           format: password
+ *            description: Actual user password
+ *       newPassword:
+ *          type: string
+ *          format: password
+ *           description: A new user password
+ *    changePasswordResponse:
+ *        type: object
+ *          properties:
+ *          success:
+ *           type: boolean
+ *           description: Is changing password successful
+ *          message:
+ *            type: string
+ *            description: Message about changing password
  */

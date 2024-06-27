@@ -3,6 +3,7 @@ import logger from "morgan";
 import cors from "cors";
 import { swagger } from "./utils/swagger.js";
 import { apiErrorHandler } from "./utils/errors/api-error-handler.js";
+import "./config/config-passport.js";
 
 import { router as authRouter } from "./routes/api/auth.js";
 

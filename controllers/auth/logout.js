@@ -8,7 +8,7 @@ export const logout = async (req, res, next) => {
     }
     const { id } = req.user;
     // Logout success response
-    logoutUser(id);
+    await logoutUser(id);
     return res.sendStatus(204);
   } catch (error) {
     next(error);

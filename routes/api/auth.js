@@ -7,6 +7,7 @@ import { register } from "../../controllers/auth/register.js";
 import { login } from "../../controllers/auth/login.js";
 import { current } from "../../controllers/auth/current.js";
 import { logout } from "../../controllers/auth/logout.js";
+import { changePassword } from "../../controllers/auth/changePassword.js";
 
 /**
  * @openapi
@@ -147,5 +148,7 @@ router.get("/current", auth, current);
  *
  */
 router.post("/logout", auth, logout);
+
+router.post("/change-password", auth, changePassword);
 
 export { router };

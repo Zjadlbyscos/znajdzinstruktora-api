@@ -2,7 +2,10 @@ import { User } from "../schemas/user.schema.js";
 import bcrypt from "bcryptjs";
 import gravatar from "gravatar";
 import jwt from "jsonwebtoken";
-import { generateVerificationKey, sendEmail } from "../utils/nodemailer.js";
+import {
+  generateVerificationKey,
+  sendEmail,
+} from "../utils/nodemailer/registerEmail.js";
 
 // Register user
 export const registerUser = async (data) => {
@@ -78,4 +81,27 @@ export const currentUser = async (id) => {
     return { error: "Unauthorized" };
   }
   return { user };
+};
+
+export const changeUserPassword = async (data) => {
+  const { email, newPassword, password: oldPassword } = data;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return { error: "Unauthorized" };
+  }
+
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatch) {
+    return { error: "Unauthorized" };
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(newPassword, salt);
+
+  user.password = hashPassword;
+
+  await user.save();
+
+  return { success: true, message: "Password has been reset successfully." };
 };
