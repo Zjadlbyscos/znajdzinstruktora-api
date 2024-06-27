@@ -2,10 +2,13 @@ import { User } from "../schemas/user.schema.js";
 import bcrypt from "bcryptjs";
 import gravatar from "gravatar";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import {
   generateVerificationKey,
   sendEmail,
 } from "../utils/nodemailer/registerEmail.js";
+import { PasswordResetToken } from "../schemas/passwordResetToken.schema.js";
+import { sendPasswordResetEmail } from "../utils/nodemailer/resetPasswordEmail.js";
 
 // Register user
 export const registerUser = async (data) => {
@@ -104,4 +107,28 @@ export const changeUserPassword = async (data) => {
   await user.save();
 
   return { success: true, message: "Password has been reset successfully." };
+};
+
+export const requestPasswordReset = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    return { error: "User not found" };
+  }
+
+  const resetToken = crypto.randomBytes(20).toString("hex");
+
+  const expireAt = Date.now() + 360000;
+
+  await new PasswordResetToken({
+    email: user.email,
+    token: resetToken,
+    expiryDate: new Date(expireAt),
+  }).save();
+
+  await sendPasswordResetEmail(email, resetToken);
+
+  return {
+    success: true,
+    message: "Email do resetowania hasła został wysłany.",
+  };
 };

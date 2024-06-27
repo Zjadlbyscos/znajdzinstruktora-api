@@ -1,9 +1,9 @@
-import { resetPasswordSchema } from "../../schemas/user.schema.js";
+import { changePasswordSchema } from "../../schemas/user.schema.js";
 import { changeUserPassword } from "../../services/auth.service.js";
 import { ApiError } from "../../utils/errors/apiError.js";
 
 export const changePassword = async (req, res, next) => {
-  const validationResult = resetPasswordSchema.validate(req.body);
+  const validationResult = changePasswordSchema.validate(req.body);
   if (validationResult.error) {
     return res.status(400).json({
       ResponseBody: validationResult.error.details[0].message,
