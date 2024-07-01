@@ -54,6 +54,14 @@ const userSchema = new Schema({
     type: String,
     default: null,
   },
+  terms: {
+    type: Boolean,
+    default: false,
+  },
+  emailConsent: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const User = model("user", userSchema);
@@ -61,12 +69,14 @@ export const User = model("user", userSchema);
 export const registerSchema = Joi.object({
   firstName: Joi.string().required(),
   lastName: Joi.string().required(),
-  city: Joi.string().required(),
-  discipline: Joi.string().required(),
-  password: Joi.string().min(3).required(),
   email: Joi.string().pattern(emailRegexp).required().messages({
     "string.pattern.base": "Email format is: example@example.com",
   }),
+  password: Joi.string().min(3).required(),
+  terms: Joi.boolean().required(),
+  emailConsent: Joi.boolean().required(),
+  city: Joi.string().required(),
+  discipline: Joi.string().required(),
 });
 
 export const loginSchema = Joi.object({
