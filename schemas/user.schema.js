@@ -6,9 +6,13 @@ Joi.objectId = objectId(Joi);
 const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // example@example.com
 
 const userSchema = new Schema({
-  name: {
+  firstName: {
     type: String,
     required: [true, "Name is required"],
+  },
+  lastName: {
+    type: String,
+    required: [true, "Last name is required"],
   },
   email: {
     type: String,
@@ -38,12 +42,27 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Verify token is required"],
   },
+  phoneNumber: {
+    type: String,
+    default: null,
+  },
+  city: {
+    type: String,
+    default: null,
+  },
+  discipline: {
+    type: String,
+    default: null,
+  },
 });
 
 export const User = model("user", userSchema);
 
 export const registerSchema = Joi.object({
-  name: Joi.string().required(),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  city: Joi.string().required(),
+  discipline: Joi.string().required(),
   password: Joi.string().min(3).required(),
   email: Joi.string().pattern(emailRegexp).required().messages({
     "string.pattern.base": "Email format is: example@example.com",

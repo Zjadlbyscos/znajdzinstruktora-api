@@ -12,7 +12,7 @@ import { sendPasswordResetEmail } from "../utils/nodemailer/resetPasswordEmail.j
 
 // Register user
 export const registerUser = async (data) => {
-  const { name, password, email } = data;
+  const { firstName, lastName, password, email, discipline, city } = data;
 
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(password, salt);
@@ -27,15 +27,18 @@ export const registerUser = async (data) => {
   }
 
   const user = new User({
-    name,
+    firstName,
+    lastName,
     email,
     password: hashPassword,
     avatarURL,
     verify: false,
     verificationToken,
+    discipline,
+    city,
   });
   await user.save();
-  await sendEmail(name, email, verificationToken);
+  await sendEmail(firstName, email, verificationToken);
 
   return user;
 };
