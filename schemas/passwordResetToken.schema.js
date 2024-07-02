@@ -25,6 +25,12 @@ export const PasswordResetToken = model(
   passwordResetTokenSchema
 );
 
+export const passwordResetRequestTokenValidationSchema = Joi.object({
+  email: Joi.string().required(),
+});
+
 export const passwordResetTokenValidationSchema = Joi.object({
   email: Joi.string().required(),
+  token: Joi.string().required(),
+  password: Joi.string().required(),
 });

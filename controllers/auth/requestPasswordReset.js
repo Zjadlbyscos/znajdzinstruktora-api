@@ -1,9 +1,9 @@
-import { passwordResetTokenValidationSchema } from "../../schemas/passwordResetToken.schema.js";
+import { passwordResetRequestTokenValidationSchema } from "../../schemas/passwordResetToken.schema.js";
 import { requestPasswordReset } from "../../services/auth.service.js";
 import { ApiError } from "../../utils/errors/apiError.js";
 
 export const sendRequestPasswordReset = async (req, res, next) => {
-  const validationResult = passwordResetTokenValidationSchema.validate(
+  const validationResult = passwordResetRequestTokenValidationSchema.validate(
     req.body
   );
   if (validationResult.error) {

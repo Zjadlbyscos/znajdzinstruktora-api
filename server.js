@@ -28,7 +28,8 @@ const runServer = async () => {
          @GET /current - current user (requirement: auth token bearer)
          @POST /logout - logout user (requirement: auth token bearer)
          @POST /change-password - change password (requirement: auth token bearer)
-         @POST /request-password-reset - request password reset
+         @POST /request-reset-password - request password reset
+         @POST /reset-password - reset password
       `
       );
     });

@@ -9,6 +9,7 @@ import { current } from "../../controllers/auth/current.js";
 import { logout } from "../../controllers/auth/logout.js";
 import { changePassword } from "../../controllers/auth/changePassword.js";
 import { sendRequestPasswordReset } from "../../controllers/auth/requestPasswordReset.js";
+import { resetPassword } from "../../controllers/auth/resetPassword.js";
 
 /**
  * @openapi
@@ -241,4 +242,57 @@ router.post("/change-password", auth, changePassword);
  */
 
 router.post("/request-reset-password", sendRequestPasswordReset);
+
+/**
+ * @openapi
+ * /auth/reset-password:
+ *  post:
+ *   summary: Resets user password
+ *   tags: [auth]
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             email:
+ *               type: string
+ *               format: email
+ *               description: User's email
+ *             token:
+ *               type: string
+ *               description: Password reset token
+ *             password:
+ *               type: string
+ *               description: New user password
+ *           required:
+ *             - email
+ *             - token
+ *             - password
+ *   responses:
+ *     200:
+ *       description: Password reset successful
+ *       content:
+ *         application/json:
+ *           example: { "message": "Password has been reset successfully." }
+ *     400:
+ *       description: Bad request (invalid request body)
+ *       content:
+ *         application/json:
+ *           example: { "error": "\"email\" must be a valid email" }
+ *     401:
+ *       description: Unauthorized (invalid or expired reset token)
+ *       content:
+ *         application/json:
+ *           example: { "error": "Invalid or expired reset token" }
+ *     500:
+ *       description: Internal Server Error
+ *       content:
+ *         application/json:
+ *           example: { "error": "Internal Server Error" }
+ */
+
+router.post("/reset-password", resetPassword);
+
 export { router };

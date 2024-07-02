@@ -123,6 +123,37 @@ export const changeUserPassword = async (data) => {
   return { success: true, message: "Password has been reset successfully." };
 };
 
+export const changeUserPasswordByReset = async (data) => {
+  const { email, token, password } = data;
+
+  const resetRecord = await PasswordResetToken.findOne({
+    email,
+    token,
+  });
+  if (!resetRecord) {
+    return { error: "Invalid or expired reset token" };
+  }
+
+  if (resetRecord.expiryDate < Date.now()) {
+    return { error: "Reset token has expired" };
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(password, salt);
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return { error: "User not found" };
+  }
+
+  user.password = hashPassword;
+  await user.save();
+
+  await resetRecord.deleteOne();
+
+  return { success: true, message: "Password has been reset successfully." };
+};
+
 export const requestPasswordReset = async (email) => {
   const user = await User.findOne({ email });
   if (!user) {
@@ -131,7 +162,7 @@ export const requestPasswordReset = async (email) => {
 
   const resetToken = crypto.randomBytes(20).toString("hex");
 
-  const expireAt = Date.now() + 360000;
+  const expireAt = Date.now() + 900000;
 
   await new PasswordResetToken({
     email: user.email,
@@ -143,6 +174,6 @@ export const requestPasswordReset = async (email) => {
 
   return {
     success: true,
-    message: "Email do resetowania hasła został wysłany.",
+    message: "Reset email has been sent successfully. Check your email.",
   };
 };
