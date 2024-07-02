@@ -124,11 +124,11 @@ export const changeUserPassword = async (data) => {
 };
 
 export const changeUserPasswordByReset = async (data) => {
-  const { email, token, password } = data;
+  const { email, resetToken, password } = data;
 
   const resetRecord = await PasswordResetToken.findOne({
     email,
-    token,
+    resetToken,
   });
   if (!resetRecord) {
     return { error: "Invalid or expired reset token" };
@@ -160,13 +160,13 @@ export const requestPasswordReset = async (email) => {
     return { error: "User not found" };
   }
 
-  const resetToken = crypto.randomBytes(20).toString("hex");
+  const generateResetToken = crypto.randomBytes(20).toString("hex");
 
   const expireAt = Date.now() + 900000;
 
   await new PasswordResetToken({
     email: user.email,
-    token: resetToken,
+    resetToken: generateResetToken,
     expiryDate: new Date(expireAt),
   }).save();
 

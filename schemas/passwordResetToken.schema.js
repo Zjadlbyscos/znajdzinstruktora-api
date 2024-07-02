@@ -8,7 +8,7 @@ const passwordResetTokenSchema = new Schema(
       required: true,
       ref: "User",
     },
-    token: {
+    resetToken: {
       type: String,
       required: true,
     },
@@ -31,6 +31,6 @@ export const passwordResetRequestTokenValidationSchema = Joi.object({
 
 export const passwordResetTokenValidationSchema = Joi.object({
   email: Joi.string().required(),
-  token: Joi.string().required(),
+  resetToken: Joi.string().required(),
   password: Joi.string().required(),
 });
