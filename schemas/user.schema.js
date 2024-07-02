@@ -28,7 +28,7 @@ const userSchema = new Schema({
   },
   isInstructor: {
     type: Boolean,
-    default: null,
+    default: false,
   },
   token: {
     type: String,
