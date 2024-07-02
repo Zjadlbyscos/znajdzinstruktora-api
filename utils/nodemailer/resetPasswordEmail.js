@@ -23,7 +23,7 @@ const createTransportOptions = {
 };
 
 export const sendPasswordResetEmail = async (email, resetToken) => {
-  const resetLink = `https://znajdzinstruktora.com/reset-password/${resetToken}`;
+  const resetLink = `https://localhost:3000/reset-password/${resetToken}`;
   const transporter = createTransport(createTransportOptions);
   return await transporter
     .sendMail({
