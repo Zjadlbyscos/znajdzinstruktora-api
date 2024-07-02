@@ -170,7 +170,7 @@ export const requestPasswordReset = async (email) => {
     expiryDate: new Date(expireAt),
   }).save();
 
-  await sendPasswordResetEmail(email, resetToken);
+  await sendPasswordResetEmail(email, generateResetToken);
 
   return {
     success: true,
