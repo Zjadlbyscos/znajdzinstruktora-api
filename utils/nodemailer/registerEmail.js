@@ -23,13 +23,14 @@ const createTransportOptions = {
 };
 
 export const sendEmail = async (name, email, verificationToken) => {
+  const activationLink = `http://localhost:3000/aktywacja/${verificationToken}`;
   const transporter = createTransport(createTransportOptions);
   return await transporter
     .sendMail({
       from: process.env.NODEMAILER_FROM_MAIL,
       to: email,
       subject: "Witaj w naszym serwisie! Potwierdź swój adres email.",
-      html: `Witaj, ${name} <br> Kliknij w link, aby potwierdzić swój adres email: <a href="${verificationToken}">Kliknij tutaj</a>`,
+      html: `Witaj, ${name} <br> Kliknij w link, aby potwierdzić swój adres email: <a href="${activationLink}">Kliknij tutaj</a>`,
     })
     .then((info) => {
       console.log(info);

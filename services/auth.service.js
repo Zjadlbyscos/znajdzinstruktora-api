@@ -43,7 +43,7 @@ export const registerUser = async (data) => {
     terms,
     emailConsent,
     avatarURL,
-    verify: false,
+    verified: false,
     verificationToken,
     discipline,
     city,
@@ -70,6 +70,10 @@ export const loginUser = async (data) => {
   // Login auth error
   if (!user || !passwordCompare) {
     return { error: "Email or password is wrong" };
+  }
+
+  if (!user.verified) {
+    return { error: "User is not verified" };
   }
 
   // Login success response
@@ -176,4 +180,24 @@ export const requestPasswordReset = async (email) => {
     success: true,
     message: "Reset email has been sent successfully. Check your email.",
   };
+};
+
+export const activateUser = async (verificationToken) => {
+  try {
+    const user = await User.findOne({ verificationToken });
+
+    if (!user) {
+      return { error: "Invalid verification token" };
+    }
+
+    user.verified = true;
+    await user.save();
+
+    return {
+      success: true,
+      message: "Email verified successfully. You can now log in.",
+    };
+  } catch (error) {
+    return { error: "Server error" };
+  }
 };

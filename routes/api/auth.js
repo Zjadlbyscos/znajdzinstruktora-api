@@ -10,6 +10,7 @@ import { logout } from "../../controllers/auth/logout.js";
 import { changePassword } from "../../controllers/auth/changePassword.js";
 import { sendRequestPasswordReset } from "../../controllers/auth/requestPasswordReset.js";
 import { resetPassword } from "../../controllers/auth/resetPassword.js";
+import { verifyEmail } from "../../controllers/auth/verifyEmail.js";
 
 /**
  * @openapi
@@ -168,34 +169,34 @@ router.post("/logout", auth, logout);
  *           properties:
  *             currentPassword:
  *               type: string
- *               description: Aktualne hasło użytkownika
+ *               description: Current User Password
  *             newPassword:
  *               type: string
- *               description: Nowe hasło, na które użytkownik chce zmienić
+ *               description: New User Password
  *           required:
  *             - currentPassword
  *             - newPassword
  *   responses:
  *     200:
- *       description: Hasło zostało zmienione
+ *       description:  Password changed successfully
  *       content:
  *         application/json:
- *           example: { "message": "Hasło zostało pomyślnie zmienione." }
+ *           example: { "message": "Password changed sucessfully" }
  *     400:
- *       description: Nieprawidłowe żądanie (np. brak wymaganych pól, nieprawidłowe hasło)
+ *       description: Bad Request (
  *       content:
  *         application/json:
- *           example: { "error": "\"currentPassword\" jest wymagane" }
+ *           example: { "error": "\"currentPassword\" is required" }
  *     401:
- *       description: Nieautoryzowany (np. nieprawidłowy token JWT, niezgodność hasła)
+ *       description: Unauthorized
  *       content:
  *         application/json:
- *           example: { "error": "Nieautoryzowany dostęp" }
+ *           example: { "error": "Unauthorized" }
  *     500:
- *       description: Błąd serwera wewnętrznego
+ *       description: Internal Server Error
  *       content:
  *         application/json:
- *           example: { "error": "Błąd serwera wewnętrznego" }
+ *           example: { "error": "Internal Server Error" }
  */
 router.post("/change-password", auth, changePassword);
 
@@ -294,5 +295,59 @@ router.post("/request-reset-password", sendRequestPasswordReset);
  */
 
 router.post("/reset-password", resetPassword);
+
+/**
+ * @openapi
+ * /auth/activate:
+ *  post:
+ *   summary: Activates user account
+ *   tags: [auth]
+ *   requestBody:
+ *     required: true
+ *     content:
+ *       application/json:
+ *         schema:
+ *           type: object
+ *           properties:
+ *             verificationToken:
+ *               type: string
+ *               description: Token used to activate the account
+ *           required:
+ *             - verificationToken
+ *   responses:
+ *     200:
+ *       description: User account activated
+ *       content:
+ *         application/json:
+ *           example:
+ *             code: 200
+ *             status: "SUCCESS"
+ *             responseBody: "Email verified successfully. You can now log in."
+ *     400:
+ *       description: Bad request (invalid request body)
+ *       content:
+ *         application/json:
+ *           example:
+ *             code: 400
+ *             status: "ERROR"
+ *             responseBody: "Invalid verification token"
+ *     401:
+ *       description: Unauthorized (invalid or expired verification token)
+ *       content:
+ *         application/json:
+ *           example:
+ *             code: 401
+ *             status: "ERROR"
+ *             responseBody: "Invalid or expired verification token"
+ *     500:
+ *       description: Internal Server Error
+ *       content:
+ *         application/json:
+ *           example:
+ *             code: 500
+ *             status: "ERROR"
+ *             responseBody: "Internal Server Error"
+ */
+router.post("/activate", verifyEmail);
 
 export { router };
