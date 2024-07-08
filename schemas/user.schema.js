@@ -1,6 +1,7 @@
 import { Schema, Types, model } from "mongoose";
 import Joi from "joi";
 import objectId from "joi-objectid";
+import { token } from "morgan";
 Joi.objectId = objectId(Joi);
 
 const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // example@example.com
@@ -98,9 +99,7 @@ export const subscribeSchema = Joi.object({
 });
 
 export const changePasswordSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required().messages({
-    "string.pattern.base": "Email format is: example@example.com",
-  }),
+  token: Joi.string().required(),
   password: Joi.string().min(3).required(),
   newPassword: Joi.string().min(3).required(),
 });

@@ -105,16 +105,16 @@ export const currentUser = async (id) => {
 };
 
 export const changeUserPassword = async (data) => {
-  const { email, newPassword, password: oldPassword } = data;
-  const user = await User.findOne({ email });
+  const { token, newPassword, password: oldPassword } = data;
+  const user = await User.findOne({ token });
 
   if (!user) {
-    return { error: "Unauthorized" };
+    return { error: "User doesn't exist" };
   }
 
   const isMatch = await bcrypt.compare(oldPassword, user.password);
   if (!isMatch) {
-    return { error: "Unauthorized" };
+    return { error: "New password is same as old one" };
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -124,7 +124,7 @@ export const changeUserPassword = async (data) => {
 
   await user.save();
 
-  return { success: true, message: "Password has been reset successfully." };
+  return { success: true, message: "Password has been changed successfully." };
 };
 
 export const changeUserPasswordByReset = async (data) => {
