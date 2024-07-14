@@ -6,6 +6,7 @@ import { apiErrorHandler } from "./utils/errors/api-error-handler.js";
 import "./config/config-passport.js";
 
 import { router as authRouter } from "./routes/api/auth.js";
+import { router as instructorsRouter } from "./routes/api/instructors.js";
 
 const app = express();
 swagger(app);
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
+app.use("/api/instructors", instructorsRouter);
 
 app.use(apiErrorHandler);
 
