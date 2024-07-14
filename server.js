@@ -30,6 +30,12 @@ const runServer = async () => {
          @POST /change-password - change password (requirement: auth token bearer)
          @POST /request-reset-password - request password reset
          @POST /reset-password - reset password
+         @POST /activate - verify email
+
+      /instructors
+          @GET / - get all instructors
+          @GET /:id - get instructor by id
+          @POST /:id - create instructor info
       `
       );
     });
