@@ -7,6 +7,7 @@ import "./config/config-passport.js";
 
 import { router as authRouter } from "./routes/api/auth.js";
 import { router as instructorsRouter } from "./routes/api/instructors.js";
+import { router as objectsRouter } from "./routes/objects.js";
 
 const app = express();
 swagger(app);
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/instructors", instructorsRouter);
+app.use("/api/objects", objectsRouter);
 
 app.use(apiErrorHandler);
 
