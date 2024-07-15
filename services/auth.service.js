@@ -13,7 +13,8 @@ import { sendPasswordResetEmail } from "../utils/nodemailer/resetPasswordEmail.j
 // Register user
 export const registerUser = async (data) => {
   const {
-    name: { firstName, lastName },
+    firstName,
+    lastName,
     password,
     email,
     discipline,
