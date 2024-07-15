@@ -31,25 +31,13 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  isInstructor: {
-    type: Boolean,
-    default: false,
-  },
   token: {
-    type: String,
-    default: null,
-  },
-  avatarURL: {
     type: String,
     default: null,
   },
   verificationToken: {
     type: String,
     required: [true, "Verify token is required"],
-  },
-  phoneNumber: {
-    type: String,
-    default: null,
   },
   city: {
     type: String,
@@ -82,7 +70,6 @@ export const registerSchema = Joi.object({
   emailConsent: Joi.boolean().required(),
   city: Joi.string().required(),
   discipline: Joi.string().required(),
-  phoneNumber: Joi.string(),
 });
 
 export const loginSchema = Joi.object({
