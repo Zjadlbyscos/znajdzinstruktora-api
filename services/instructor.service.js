@@ -1,8 +1,16 @@
 import { Instructor } from "../schemas/instructor.schema.js";
 
 export const addInstructorInfo = async (instructorInfo) => {
-  const { bio, phoneNumber, city, discipline, socialMedia, instructorId } =
-    instructorInfo;
+  const {
+    bio,
+    phoneNumber,
+    discipline,
+    socialMedia,
+    instructorId,
+    photo,
+    language,
+    name,
+  } = instructorInfo;
 
   const checkInstructor = await Instructor.findOne({ instructorId });
 
@@ -11,11 +19,14 @@ export const addInstructorInfo = async (instructorInfo) => {
   }
 
   const instructor = new Instructor({
+    instructorId,
+    name,
+    photo,
     bio,
     phoneNumber,
-    city,
     discipline,
     socialMedia,
+    language,
   });
 
   await instructor.save();
