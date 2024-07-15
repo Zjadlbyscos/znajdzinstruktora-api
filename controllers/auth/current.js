@@ -8,20 +8,25 @@ export const current = async (req, res, next) => {
 
     // Current user unauthorized error
     if (!loggedUser) {
-      return next(ApiError.unauthorized(loggedUser.error));
+      return next(ApiError.unauthorized("User not found"));
     }
 
-    const { email, isInstructor, name, avatarURL } = loggedUser.user;
+    const { email, firstName, lastName, city, phoneNumber, language } =
+      loggedUser.user;
 
     // Current user success response
     return res.status(200).json({
       code: 200,
-      status: `OK`,
+      status: "OK",
       ResponseBody: {
-        email: email,
-        isInstructor: isInstructor,
-        name: name,
-        avatarURL: avatarURL,
+        email,
+        name: {
+          firstName,
+          lastName,
+        },
+        city,
+        phoneNumber,
+        language,
       },
     });
   } catch (error) {
