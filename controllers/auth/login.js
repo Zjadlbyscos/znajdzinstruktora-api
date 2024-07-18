@@ -18,12 +18,14 @@ export const login = async (req, res, next) => {
       return next(ApiError.unauthorized(loggedUser.error));
     }
 
-    const { firstName, lastName, email, city, discipline } = loggedUser?.user;
+    const { id, firstName, lastName, email, city, discipline } =
+      loggedUser?.user;
 
     return res.status(200).json({
       RequestBody: {
         "Current token": loggedUser?.token,
         user: {
+          id,
           firstName,
           lastName,
           email,

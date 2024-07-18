@@ -3,7 +3,7 @@ import { createInstructor } from "../../services/instructor.service.js";
 import { ApiError } from "../../utils/errors/apiError.js";
 
 export const createNewInstructor = async (req, res, next) => {
-  const validationResult = createInstructorSchema.validate(req.params);
+  const validationResult = createInstructorSchema.validate(req.body);
   if (validationResult.error) {
     return res.status(400).json({
       ResponseBody: validationResult.error.details[0].message,
@@ -11,7 +11,7 @@ export const createNewInstructor = async (req, res, next) => {
   }
 
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const newInstructor = await createInstructor({
       RefUserId: id,
     });

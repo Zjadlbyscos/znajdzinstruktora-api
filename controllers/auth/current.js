@@ -20,6 +20,7 @@ export const current = async (req, res, next) => {
       status: "OK",
       ResponseBody: {
         email,
+        id,
         name: {
           firstName,
           lastName,
