@@ -6,18 +6,21 @@ Joi.objectId = objectId(Joi);
 
 const instructorSchema = new Schema(
   {
-    instructorId: {
+    refUserId: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
     bio: {
       type: String,
-      required: [true, "Bio is required"],
+      default: null,
     },
     phoneNumber: {
       type: String,
-      required: [true, "Phone number is required"],
+      default: null,
+    },
+    socialMedia: {
+      type: String,
+      default: null,
     },
     city: {
       type: String,
@@ -27,10 +30,6 @@ const instructorSchema = new Schema(
       type: String,
       ref: "User",
     },
-    socialMedia: {
-      type: String,
-      default: null,
-    },
   },
   {
     toJSON: { virtuals: true },
@@ -38,22 +37,8 @@ const instructorSchema = new Schema(
   }
 );
 
-instructorSchema.virtual("name", {
-  ref: "User",
-  localField: "instructorId",
-  foreignField: "_id",
-  justOne: true,
-  options: { select: "firstName lastName" },
-});
-
 export const Instructor = model("Instructor", instructorSchema);
 
-export const instructorInformationSchema = Joi.object({
-  name: Joi.string().required(),
-  bio: Joi.string().required(),
-  phoneNumber: Joi.string().required(),
-  language: Joi.string().required(),
-  photo: Joi.string().required(),
-  discipline: Joi.string().required(),
-  socialMedia: Joi.string().allow(null, ""),
+export const createInstructorSchema = Joi.object({
+  id: Joi.objectId(),
 });

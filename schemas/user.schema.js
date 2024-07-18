@@ -55,6 +55,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isInstructor: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const User = model("user", userSchema);

@@ -42,6 +42,7 @@ export const registerUser = async (data) => {
     password: hashPassword,
     terms,
     emailConsent,
+    avatarURL,
     verified: false,
     verificationToken,
     discipline,

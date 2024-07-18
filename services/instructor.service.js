@@ -1,37 +1,39 @@
+// services/instructor.service.js
+
 import { Instructor } from "../schemas/instructor.schema.js";
+import { User } from "../schemas/user.schema.js";
 
-export const addInstructorInfo = async (instructorInfo) => {
-  const {
-    bio,
-    phoneNumber,
-    discipline,
-    socialMedia,
-    instructorId,
-    photo,
-    language,
-    name,
-  } = instructorInfo;
+export const createInstructor = async ({ RefUserId }) => {
+  try {
+    const existingInstructor = await Instructor.findOne({ userId: RefUserId });
+    if (existingInstructor) {
+      return { error: "Instructor already exists" };
+    }
 
-  const checkInstructor = await Instructor.findOne({ instructorId });
+    const user = await User.findById(RefUserId);
+    if (!user) {
+      throw new Error("User not found");
+    }
 
-  if (checkInstructor) {
-    return { error: `Instructor already exist` };
+    if (user.isInstructor) {
+      return { error: "User is already an instructor" };
+    }
+
+    user.isInstructor = true;
+    await user.save();
+
+    const instructor = new Instructor({
+      userId: user._id,
+      city: user.city,
+      discipline: user.discipline,
+    });
+
+    await instructor.save();
+
+    return { instructor };
+  } catch (error) {
+    throw new Error(error);
   }
-
-  const instructor = new Instructor({
-    instructorId,
-    name,
-    photo,
-    bio,
-    phoneNumber,
-    discipline,
-    socialMedia,
-    language,
-  });
-
-  await instructor.save();
-
-  return instructor;
 };
 
 export const getInstructorId = async (instructorId) => {
