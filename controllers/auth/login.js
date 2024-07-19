@@ -18,7 +18,7 @@ export const login = async (req, res, next) => {
       return next(ApiError.unauthorized(loggedUser.error));
     }
 
-    const { id, firstName, lastName, email, city, discipline } =
+    const { id, firstName, lastName, email, city, discipline, isInstructor } =
       loggedUser?.user;
 
     return res.status(200).json({
@@ -31,6 +31,7 @@ export const login = async (req, res, next) => {
           email,
           city,
           discipline,
+          isInstructor,
         },
       },
     });

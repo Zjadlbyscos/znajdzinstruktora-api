@@ -11,8 +11,15 @@ export const current = async (req, res, next) => {
       return next(ApiError.unauthorized("User not found"));
     }
 
-    const { email, firstName, lastName, city, phoneNumber, language } =
-      loggedUser.user;
+    const {
+      email,
+      firstName,
+      lastName,
+      city,
+      phoneNumber,
+      language,
+      isInstructor,
+    } = loggedUser.user;
 
     // Current user success response
     return res.status(200).json({
@@ -28,6 +35,7 @@ export const current = async (req, res, next) => {
         city,
         phoneNumber,
         language,
+        isInstructor,
       },
     });
   } catch (error) {
