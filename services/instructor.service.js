@@ -41,3 +41,20 @@ export const getInstructorId = async (instructorId) => {
 
   return instructor;
 };
+
+export const updateInstructor = async (instructorId, updateData) => {
+  try {
+    const existingInstructor = await Instructor.findOne({ instructorId });
+
+    if (!existingInstructor) {
+      return { error: "Instructor not found" };
+    }
+
+    Object.assign(existingInstructor, updateData);
+    await existingInstructor.save();
+
+    return existingInstructor;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

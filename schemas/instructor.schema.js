@@ -14,9 +14,15 @@ const instructorSchema = new Schema(
       type: String,
       default: null,
     },
-    phoneNumber: {
-      type: String,
-      default: null,
+    contact: {
+      phoneNumber: {
+        type: String,
+        default: null,
+      },
+      email: {
+        type: String,
+        default: null,
+      },
     },
     socialMedia: {
       type: String,
@@ -30,6 +36,18 @@ const instructorSchema = new Schema(
       type: String,
       ref: "User",
     },
+    classLevel: {
+      type: [String],
+      default: [],
+    },
+    languages: {
+      type: [String],
+      default: [],
+    },
+    photo: {
+      type: String,
+      default: null,
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -41,4 +59,16 @@ export const Instructor = model("Instructor", instructorSchema);
 
 export const createInstructorSchema = Joi.object({
   id: Joi.objectId(),
+});
+
+export const updateInstructorSchema = Joi.object({
+  bio: Joi.string(),
+  contact: Joi.object({
+    phoneNumber: Joi.string(),
+    email: Joi.string(),
+  }),
+  socialMedia: Joi.string(),
+  classLevel: Joi.array(),
+  languages: Joi.array(),
+  photo: Joi.string(),
 });
