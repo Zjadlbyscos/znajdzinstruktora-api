@@ -14,15 +14,13 @@ const instructorSchema = new Schema(
       type: String,
       default: null,
     },
-    contact: {
-      phoneNumber: {
-        type: String,
-        default: null,
-      },
-      email: {
-        type: String,
-        default: null,
-      },
+    phoneNumber: {
+      type: String,
+      default: null,
+    },
+    email: {
+      type: String,
+      default: null,
     },
     socialMedia: {
       type: String,
@@ -62,13 +60,12 @@ export const createInstructorSchema = Joi.object({
 });
 
 export const updateInstructorSchema = Joi.object({
-  bio: Joi.string(),
-  contact: Joi.object({
-    phoneNumber: Joi.string(),
-    email: Joi.string(),
-  }),
-  socialMedia: Joi.string(),
-  classLevel: Joi.array(),
-  languages: Joi.array(),
-  photo: Joi.string(),
+  id: Joi.objectId().required(),
+  bio: Joi.string().optional(),
+  phoneNumber: Joi.string().optional(),
+  email: Joi.string().email().optional(),
+  socialMedia: Joi.string().optional(),
+  photo: Joi.string().optional(),
+  classLevel: Joi.array().items(Joi.string()).optional(),
+  languages: Joi.array().items(Joi.string()).optional(),
 });

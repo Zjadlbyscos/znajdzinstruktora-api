@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
-
+import streamifier from "streamifier";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } =
@@ -13,13 +14,19 @@ cloudinary.config({
   secure: true,
 });
 
-export const uploadRecipeImage = async (imagePath) => {
-  try {
-    const result = await cloudinary.uploader.upload(imagePath, {
-      folder: "znajdzinstruktora-api/instruktorzy",
-    });
-    return result;
-  } catch (err) {
-    console.error(err);
-  }
+export const uploadRecipeImage = (buffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder: "znajdzinstruktora-api/instructors" },
+      (error, result) => {
+        if (result) {
+          resolve(result);
+        } else {
+          reject(error);
+        }
+      }
+    );
+
+    streamifier.createReadStream(buffer).pipe(stream);
+  });
 };

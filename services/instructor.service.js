@@ -1,5 +1,3 @@
-// services/instructor.service.js
-
 import { Instructor } from "../schemas/instructor.schema.js";
 import { User } from "../schemas/user.schema.js";
 
@@ -44,7 +42,7 @@ export const getInstructorId = async (instructorId) => {
 
 export const updateInstructor = async (instructorId, updateData) => {
   try {
-    const existingInstructor = await Instructor.findOne({ instructorId });
+    const existingInstructor = await Instructor.findOne({ _id: instructorId });
 
     if (!existingInstructor) {
       return { error: "Instructor not found" };
@@ -55,6 +53,7 @@ export const updateInstructor = async (instructorId, updateData) => {
 
     return existingInstructor;
   } catch (error) {
+    console.error("Error updating instructor:", error); // Enhanced error logging
     throw new Error(error);
   }
 };
