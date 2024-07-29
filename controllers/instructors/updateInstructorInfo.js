@@ -24,6 +24,7 @@ export const updateInstructorInfo = async (req, res, next) => {
 
   const { error, value } = updateInstructorSchema.validate(updateData);
   if (error) {
+    console.log(error);
     return next(ApiError.badRequest(error.details[0].message));
   }
 
