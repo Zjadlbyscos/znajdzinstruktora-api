@@ -12,19 +12,19 @@ const instructorSchema = new Schema(
     },
     bio: {
       type: String,
-      default: null,
+      default: "",
     },
     phoneNumber: {
       type: String,
-      default: null,
+      default: "",
     },
     email: {
       type: String,
-      default: null,
+      default: "",
     },
     socialMedia: {
       type: String,
-      default: null,
+      default: "",
     },
     city: {
       type: String,
