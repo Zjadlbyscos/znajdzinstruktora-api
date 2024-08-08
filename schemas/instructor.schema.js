@@ -22,7 +22,19 @@ const instructorSchema = new Schema(
       type: String,
       default: "",
     },
-    socialMedia: {
+    instagram: {
+      type: String,
+      default: "",
+    },
+    tiktok: {
+      type: String,
+      default: "",
+    },
+    youtube: {
+      type: String,
+      default: "",
+    },
+    facebook: {
       type: String,
       default: "",
     },
@@ -64,7 +76,10 @@ export const updateInstructorSchema = Joi.object({
   bio: Joi.string().optional(),
   phoneNumber: Joi.string().optional(),
   email: Joi.string().email().optional(),
-  socialMedia: Joi.string().optional(),
+  instagram: Joi.string().optional(),
+  tiktok: Joi.string().optional(),
+  youtube: Joi.string().optional(),
+  facebook: Joi.string().optional(),
   photo: Joi.string().optional(),
   classLevel: Joi.array().items(Joi.string()).optional(),
   languages: Joi.array().items(Joi.string()).optional(),
