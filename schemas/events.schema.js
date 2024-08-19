@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import Joi from "joi";
 import objectId from "joi-objectid";
 
@@ -7,12 +7,12 @@ export const eventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Instructor",
   },
-  eventId: {
-    type: Schema.Types.ObjectId,
-    ref: "Event",
-  },
   title: {
     type: String,
+    required: true,
+  },
+  classLevel: {
+    type: [String],
     required: true,
   },
   description: {
@@ -23,10 +23,6 @@ export const eventSchema = new Schema({
     type: Date,
     required: true,
   },
-  time: {
-    type: String,
-    required: true,
-  },
   duration: {
     type: Number,
     required: true,
@@ -35,7 +31,7 @@ export const eventSchema = new Schema({
     type: String,
     required: true,
   },
-  status: {
+  avaiable: {
     type: Boolean,
     required: true,
     default: true,
@@ -46,15 +42,14 @@ export const Event = model("Event", eventSchema);
 
 Joi.objectId = objectId(Joi);
 
-export const validateEvent = (event) => {
-  const schema = Joi.object({
-    instructorId: Joi.objectId().required(),
-    title: Joi.string().min(3).max(255).required(),
-    description: Joi.string().min(10).required(),
-    date: Joi.date().required(),
-    time: Joi.string().required(),
-    duration: Joi.number().integer().min(1).required(),
-    adress: Joi.string().min(5).required(),
-    status: Joi.boolean().required(),
-  });
-};
+export const createEventSchema = Joi.object({
+  instructorId: Joi.objectId().required(),
+  eventId: Joi.objectId(),
+  title: Joi.string().min(3).max(255).required(),
+  classLevel: Joi.array().items(Joi.string()).required(),
+  description: Joi.string().min(10).optional(),
+  date: Joi.date().required(),
+  duration: Joi.number().integer().min(1).required(),
+  adress: Joi.string().min(5).required(),
+  avaiable: Joi.boolean().required(),
+});
