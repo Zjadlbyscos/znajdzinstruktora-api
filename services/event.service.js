@@ -20,3 +20,9 @@ export const createEvent = async (data) => {
     throw new Error("Error creating event");
   }
 };
+
+export const getEventId = async (id) => {
+  const event = await Event.findOne({ _id: id });
+
+  return event;
+};
