@@ -31,9 +31,12 @@ export const createEvent = async (data) => {
 };
 
 export const getEventId = async (id) => {
-  const event = await Event.findOne({ _id: id });
-
-  return event;
+  try {
+    const event = await Event.findOne({ _id: id });
+    return event;
+  } catch (error) {
+    console.error("Error getting event by id:", error);
+  }
 };
 
 export const deleteEvent = async (eventId, _id) => {
@@ -49,5 +52,16 @@ export const deleteEvent = async (eventId, _id) => {
   } catch (error) {
     console.error("Error deleting event:", error);
     throw new Error("Error deleting event");
+  }
+};
+
+export const getEventsByInstructorId = async (instructorId) => {
+  try {
+    const events = await Event.find({ instructorId });
+
+    return events;
+  } catch (error) {
+    console.error("Error getting events by instructor id:", error);
+    throw new Error("Error getting events by instructor id");
   }
 };
