@@ -9,11 +9,13 @@ export const createNewEvent = async (req, res, next) => {
       ResponseBody: validationResult.error.details[0].message,
     });
   }
+
   try {
     const newEvent = await createEvent(req.body);
     if (newEvent.error) {
       return next(ApiError.conflict(newEvent.error));
     }
+
     return res.status(201).json({
       code: 201,
       status: "CREATED",

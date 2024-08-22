@@ -1,6 +1,5 @@
 import { model, Schema } from "mongoose";
 import Joi from "joi";
-import objectId from "joi-objectid";
 
 export const eventSchema = new Schema({
   instructorId: {
@@ -9,7 +8,7 @@ export const eventSchema = new Schema({
   },
   title: {
     type: String,
-    required: true,
+    required: false,
   },
   classLevel: {
     type: [String],
@@ -17,7 +16,7 @@ export const eventSchema = new Schema({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
   date: {
     type: Date,
@@ -40,11 +39,8 @@ export const eventSchema = new Schema({
 
 export const Event = model("Event", eventSchema);
 
-Joi.objectId = objectId(Joi);
-
 export const createEventSchema = Joi.object({
   instructorId: Joi.objectId().required(),
-  eventId: Joi.objectId(),
   title: Joi.string().min(3).max(255).required(),
   classLevel: Joi.array().items(Joi.string()).required(),
   description: Joi.string().min(10).optional(),
