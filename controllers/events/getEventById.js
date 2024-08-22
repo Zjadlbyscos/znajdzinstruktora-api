@@ -3,9 +3,9 @@ import { ApiError } from "../../utils/errors/apiError.js";
 
 export const getEventById = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { eventId } = req.params;
 
-    const event = await getEventId(id);
+    const event = await getEventId(eventId);
     if (!event) {
       return next(ApiError.notFound("Event not found"));
     }

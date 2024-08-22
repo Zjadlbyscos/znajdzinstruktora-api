@@ -36,10 +36,18 @@ export const getEventId = async (id) => {
   return event;
 };
 
-export const deleteEvent = async (eventId, instructorId) => {
-  const result = await Event.findByIdAndDelete({
-    _id: eventId,
-    instructorId: instructorId,
-  });
-  return result;
+export const deleteEvent = async (eventId, _id) => {
+  try {
+    const eventDeletionResult = await Event.findByIdAndDelete(eventId);
+
+    const instructorUpdateResult = await Instructor.updateOne(
+      { instructorId: _id },
+      { $pull: { events: eventId } }
+    );
+
+    return { eventDeletionResult, instructorUpdateResult };
+  } catch (error) {
+    console.error("Error deleting event:", error);
+    throw new Error("Error deleting event");
+  }
 };
