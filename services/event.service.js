@@ -1,18 +1,27 @@
 import { Event } from "../schemas/events.schema.js";
+import { Instructor } from "../schemas/instructor.schema.js";
 
 export const createEvent = async (data) => {
   try {
-    const { _id } = data;
+    const event = new Event(data);
 
-    const existingEvent = await Event.findOne({ _id });
+    const existingEvent = await Event.findOne(event._id);
+
     if (existingEvent) {
       return { error: "Event already exists" };
     }
 
-    const event = new Event(data);
-    console.log("Data", data);
-    console.log("event", event);
     await event.save();
+
+    const instructor = await Instructor.findById(data.instructorId);
+
+    if (!instructor) {
+      throw new Error("Instructor not found");
+    }
+
+    instructor.events.push(event._id);
+
+    await instructor.save();
 
     return event;
   } catch (error) {
@@ -25,4 +34,12 @@ export const getEventId = async (id) => {
   const event = await Event.findOne({ _id: id });
 
   return event;
+};
+
+export const deleteEvent = async (eventId, instructorId) => {
+  const result = await Event.findByIdAndDelete({
+    _id: eventId,
+    instructorId: instructorId,
+  });
+  return result;
 };

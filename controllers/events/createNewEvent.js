@@ -12,6 +12,7 @@ export const createNewEvent = async (req, res, next) => {
 
   try {
     const newEvent = await createEvent(req.body);
+
     if (newEvent.error) {
       return next(ApiError.conflict(newEvent.error));
     }
