@@ -25,7 +25,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/instructors", instructorsRouter);
 app.use("/api/facilities", facilitiesRouter);
 app.use("/api/events", eventsRouter);
-app.use("/api/upcoming", eventsRouter);
+app.use("/api/upcoming", upcomingEventsRouter);
 
 app.use(apiErrorHandler);
 

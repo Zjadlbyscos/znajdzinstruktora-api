@@ -26,7 +26,7 @@ export const eventSchema = new Schema({
     type: Number,
     required: true,
   },
-  adress: {
+  address: {
     type: String,
     required: true,
   },
@@ -34,6 +34,11 @@ export const eventSchema = new Schema({
     type: Boolean,
     required: true,
     default: true,
+  },
+  facilityId: {
+    type: Schema.Types.ObjectId,
+    ref: "Facility",
+    required: true,
   },
 });
 
@@ -46,6 +51,7 @@ export const createEventSchema = Joi.object({
   description: Joi.string().min(10).optional(),
   date: Joi.date().required(),
   duration: Joi.number().integer().min(1).required(),
-  adress: Joi.string().min(5).required(),
+  address: Joi.string().min(5).required(),
   avaiable: Joi.boolean().required(),
+  facilityId: Joi.objectId().required(),
 });
