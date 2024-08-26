@@ -4,7 +4,7 @@ import objectId from "joi-objectid";
 
 Joi.objectId = objectId(Joi);
 
-const objectSchema = new Schema({
+const facilitySchema = new Schema({
   name: {
     type: String,
     required: [true, "Name is required"],
@@ -17,10 +17,10 @@ const objectSchema = new Schema({
     type: String,
     required: [true, "Image is required"],
   },
-  localisation: {
+  city: {
     type: String,
-    required: [true, "Localisation is required"],
+    required: [true, "City is required"],
   },
 });
 
-export const Object = model("Object", objectSchema);
+export const Facility = model("Facility", facilitySchema);
