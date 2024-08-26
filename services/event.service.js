@@ -65,3 +65,20 @@ export const getEventsByInstructorId = async (instructorId) => {
     throw new Error("Error getting events by instructor id");
   }
 };
+
+export const updateEvent = async (eventId, updateData) => {
+  try {
+    const existingEvent = await Event.findOne({ _id: eventId });
+
+    if (!existingEvent) {
+      return { error: "Event not found" };
+    }
+    Object.assign(existingEvent, updateData);
+    await existingEvent.save();
+
+    return existingEvent;
+  } catch (error) {
+    console.error("Error updating event:", error);
+    throw new Error(error);
+  }
+};
