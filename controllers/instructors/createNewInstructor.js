@@ -11,7 +11,7 @@ export const createNewInstructor = async (req, res, next) => {
   }
 
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const newInstructor = await createInstructor({
       RefUserId: id,
     });

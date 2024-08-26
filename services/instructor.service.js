@@ -4,7 +4,8 @@ import { User } from "../schemas/user.schema.js";
 export const createInstructor = async ({ RefUserId }) => {
   try {
     const existingInstructor = await Instructor.findOne({ userId: RefUserId });
-    if (existingInstructor) {
+    console.log("existingInstructor", existingInstructor);
+    if (!existingInstructor) {
       return { error: "Instructor already exists" };
     }
 
