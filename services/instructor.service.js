@@ -54,7 +54,7 @@ export const updateInstructor = async (instructorId, updateData) => {
 
     return existingInstructor;
   } catch (error) {
-    console.error("Error updating instructor:", error); // Enhanced error logging
+    console.error("Error updating instructor:", error);
     throw new Error(error);
   }
 };

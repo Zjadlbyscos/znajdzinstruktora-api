@@ -2,10 +2,10 @@ import express from "express";
 
 const router = express.Router();
 
-import { getAllObjects } from "../../controllers/object/getAllObjects.js";
-import { getObjectById } from "../../controllers/object/getObjectById.js";
+import { getAllFacilities } from "../../controllers/object/getAllFacilities.js";
+import { getFacilityById } from "../../controllers/object/getFacilityById.js";
 
-router.get("/", getAllObjects);
-router.get("/:id", getObjectById);
+router.get("/", getAllFacilities);
+router.get("/:id", getFacilityById);
 
 export { router };
