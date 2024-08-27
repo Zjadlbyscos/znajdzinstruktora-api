@@ -12,9 +12,9 @@ router.post("/", createNewEvent);
 
 router.get("/", getEvents);
 
-router.get("/:instructorId", getEventsByInstructor);
-
 router.get("/:eventId", getEventById);
+
+router.get("/byInstructor/:instructorId", getEventsByInstructor);
 
 router.delete("/:eventId", removeEvent);
 
