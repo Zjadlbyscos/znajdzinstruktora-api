@@ -5,7 +5,7 @@ export const createInstructor = async ({ RefUserId }) => {
   try {
     const existingInstructor = await Instructor.findOne({ userId: RefUserId });
     console.log("existingInstructor", existingInstructor);
-    if (!existingInstructor) {
+    if (existingInstructor) {
       return { error: "Instructor already exists" };
     }
 
@@ -36,7 +36,7 @@ export const createInstructor = async ({ RefUserId }) => {
 };
 
 export const getInstructorId = async (instructorId) => {
-  const instructor = await Instructor.findOne({ instructorId });
+  const instructor = await Instructor.findById({ instructorId });
 
   return instructor;
 };
