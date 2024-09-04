@@ -59,6 +59,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  instructorId: {
+    type: Schema.Types.ObjectId,
+    ref: "Instructor",
+  },
 });
 
 export const User = model("user", userSchema);

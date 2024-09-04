@@ -23,9 +23,7 @@ export const createNewInstructor = async (req, res, next) => {
     return res.status(201).json({
       code: 201,
       status: "CREATED",
-      ResponseBody: {
-        newInstructor,
-      },
+      newInstructor,
     });
   } catch (error) {
     next(error);

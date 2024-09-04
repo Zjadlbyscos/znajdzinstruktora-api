@@ -3,9 +3,9 @@ import { getInstructorId } from "../../services/instructor.service.js";
 
 export const getInstructorById = async (req, res, next) => {
   try {
-    const { instructorId } = req.params;
+    const { id } = req.params;
 
-    const instructor = await getInstructorId(instructorId);
+    const instructor = await getInstructorId(id);
     if (!instructor) {
       return next(ApiError.notFound("Instructor not found"));
     }

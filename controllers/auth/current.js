@@ -19,6 +19,7 @@ export const current = async (req, res, next) => {
       phoneNumber,
       language,
       isInstructor,
+      instructorId,
     } = loggedUser.user;
 
     // Current user success response
@@ -36,6 +37,7 @@ export const current = async (req, res, next) => {
         phoneNumber,
         language,
         isInstructor,
+        instructorId,
       },
     });
   } catch (error) {

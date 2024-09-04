@@ -3,19 +3,19 @@ import { User } from "../schemas/user.schema.js";
 
 export const createInstructor = async ({ RefUserId }) => {
   try {
-    const existingInstructor = await Instructor.findOne({ userId: RefUserId });
-    console.log("existingInstructor", existingInstructor);
-    if (existingInstructor) {
-      return { error: "Instructor already exists" };
-    }
-
     const user = await User.findById(RefUserId);
+
     if (!user) {
       throw new Error("User not found");
     }
 
     if (user.isInstructor) {
       return { error: "User is already an instructor" };
+    }
+
+    const existingInstructor = await User.findOne({ instructorId: user._id });
+    if (existingInstructor) {
+      return { error: "Instructor already exists" };
     }
 
     user.isInstructor = true;
@@ -29,14 +29,17 @@ export const createInstructor = async ({ RefUserId }) => {
 
     await instructor.save();
 
-    return { instructor };
+    user.instructorId = instructor._id;
+    await user.save();
+
+    return instructor;
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const getInstructorId = async (instructorId) => {
-  const instructor = await Instructor.findById({ instructorId });
+export const getInstructorId = async (id) => {
+  const instructor = await Instructor.findById({ _id: id });
 
   return instructor;
 };
@@ -54,7 +57,7 @@ export const updateInstructor = async (instructorId, updateData) => {
 
     return existingInstructor;
   } catch (error) {
-    console.error("Error updating instructor:", error);
+    console.log("Error updating instructor:", error);
     throw new Error(error);
   }
 };
