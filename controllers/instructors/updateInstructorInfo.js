@@ -30,15 +30,15 @@ export const updateInstructorInfo = async (req, res, next) => {
 
   try {
     const { id } = value;
-    let photo = null;
+    let image = null;
 
     if (req.file) {
       const result = await uploadRecipeImage(req.file.buffer);
-      photo = result.secure_url;
+      image = result.secure_url;
     }
 
-    if (photo) {
-      value.photo = photo;
+    if (image) {
+      value.image = image;
     }
 
     const updatedInstructor = await updateInstructor(id, value);

@@ -54,7 +54,7 @@ const instructorSchema = new Schema(
       type: [String],
       default: [],
     },
-    photo: {
+    image: {
       type: String,
       default: null,
     },

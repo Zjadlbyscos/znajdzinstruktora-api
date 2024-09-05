@@ -14,6 +14,6 @@ router.get("/:id", getInstructorById);
 
 router.post("/:id", createNewInstructor);
 
-router.patch("/:id", upload.single("photo"), updateInstructorInfo);
+router.patch("/:id", upload.single("image"), updateInstructorInfo);
 
 export { router };
