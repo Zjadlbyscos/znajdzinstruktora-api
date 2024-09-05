@@ -63,6 +63,10 @@ const instructorSchema = new Schema(
       ref: "Event",
       default: null,
     },
+    type: {
+      type: String,
+      default: "instructor",
+    },
   },
   {
     toJSON: { virtuals: true },
