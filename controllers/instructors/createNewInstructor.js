@@ -13,7 +13,7 @@ export const createNewInstructor = async (req, res, next) => {
   try {
     const { id } = req.params;
     const newInstructor = await createInstructor({
-      RefUserId: id,
+      refUserId: id,
     });
 
     if (newInstructor.error) {
@@ -27,5 +27,6 @@ export const createNewInstructor = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+    console.log(error);
   }
 };

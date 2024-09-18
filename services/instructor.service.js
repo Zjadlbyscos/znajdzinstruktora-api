@@ -1,9 +1,10 @@
 import { Instructor } from "../schemas/instructor.schema.js";
 import { User } from "../schemas/user.schema.js";
 
-export const createInstructor = async ({ RefUserId }) => {
+export const createInstructor = async ({ refUserId }) => {
   try {
-    const user = await User.findById(RefUserId);
+    const user = await User.findById(refUserId);
+    console.log(user);
 
     if (!user) {
       throw new Error("User not found");
@@ -13,7 +14,9 @@ export const createInstructor = async ({ RefUserId }) => {
       return { error: "User is already an instructor" };
     }
 
-    const existingInstructor = await User.findOne({ instructorId: user._id });
+    const existingInstructor = await Instructor.findOne({
+      refUserId: user._id,
+    });
     if (existingInstructor) {
       return { error: "Instructor already exists" };
     }
@@ -22,9 +25,10 @@ export const createInstructor = async ({ RefUserId }) => {
     await user.save();
 
     const instructor = new Instructor({
-      userId: user._id,
+      refUserId: user._id,
       city: user.city,
       discipline: user.discipline,
+      fullName: `${user.firstName} ${user.lastName}`,
     });
 
     await instructor.save();
