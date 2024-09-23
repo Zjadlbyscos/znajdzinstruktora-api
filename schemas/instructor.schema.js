@@ -10,6 +10,10 @@ const instructorSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    fullName: {
+      type: String,
+      default: "",
+    },
     bio: {
       type: String,
       default: "",

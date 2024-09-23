@@ -26,6 +26,10 @@ export const eventSchema = new Schema({
     type: Date,
     required: true,
   },
+  date: {
+    type: Date,
+    required: true,
+  },
   duration: {
     type: Number,
     required: true,
@@ -44,6 +48,11 @@ export const eventSchema = new Schema({
     ref: "Facility",
     required: true,
   },
+  discipline: {
+    type: String,
+    required: true,
+    ref: "User",
+  },
 });
 
 export const Event = model("Event", eventSchema);
@@ -59,4 +68,5 @@ export const createEventSchema = Joi.object({
   address: Joi.string(),
   avaiable: Joi.boolean().required(),
   facilityId: Joi.objectId().required(),
+  discipline: Joi.string().required(),
 });
