@@ -13,12 +13,16 @@ export const searchEvent = async (activity, city, date) => {
   };
 
   if (activity) query.discipline = activity;
-  if (city) query.city = city;
+  if (city) query.address = city;
 
   try {
-    const events = await Event.find(query).select("city discipline date");
+    const events = await Event.find(query)
+      .populate("instructorId")
+      .select("city discipline date instructorId");
+
     return events;
   } catch (error) {
+    console.error("Error searching for events:", error);
     throw error;
   }
 };
