@@ -93,7 +93,7 @@ export const updateInstructorSchema = Joi.object({
   tiktok: Joi.string().optional(),
   youtube: Joi.string().optional(),
   facebook: Joi.string().optional(),
-  photo: Joi.string().optional(),
+  image: Joi.string().optional(),
   classLevel: Joi.array().items(Joi.string()).optional(),
   languages: Joi.array().items(Joi.string()).optional(),
 });
