@@ -65,18 +65,16 @@ export const getEventsForUser = async (userId) => {
   }
 };
 
-export const upcomingInstructorEvents = async (id) => {
+export const upcomingInstructorEvents = async (id, limit, page) => {
   try {
     const instructor = await Instructor.findById({ _id: id });
-    console.log(instructor, "instructor");
 
     if (!instructor) {
       console.error("Instructor not found:");
       throw new Error("Instructor not found");
     }
 
-    const date = moment().startOf("day").toDate();
-    console.log(date, "date");
+    const date = new Date();
 
     const events = await Event.aggregate([
       {
@@ -84,6 +82,15 @@ export const upcomingInstructorEvents = async (id) => {
           instructorId: instructor._id,
           date: { $gte: date },
         },
+      },
+      {
+        $sort: { date: 1, start: 1 },
+      },
+      {
+        $skip: (page - 1) * limit,
+      },
+      {
+        $limit: limit,
       },
       {
         $lookup: {
@@ -105,6 +112,8 @@ export const upcomingInstructorEvents = async (id) => {
           end: 1,
           address: 1,
           duration: 1,
+          classLevel: 1,
+          discipline: 1,
           facility: {
             _id: 1,
             name: 1,
@@ -114,12 +123,19 @@ export const upcomingInstructorEvents = async (id) => {
           },
         },
       },
-      { $sort: { date: 1, start: 1 } },
     ]).exec();
 
-    console.log("events", events);
+    const total = await Event.countDocuments({
+      instructorId: instructor._id,
+      date: { $gte: date },
+    });
 
-    return events;
+    return {
+      events,
+      total,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+    };
   } catch (error) {
     console.error("Error getting upcoming events for instructor:", error);
     throw error;
