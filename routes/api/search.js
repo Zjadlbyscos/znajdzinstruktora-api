@@ -2,8 +2,8 @@ import express from "express";
 
 const router = express.Router();
 
-import { getSearchedEvent } from "../../controllers/search/getSearchedEvent.js";
+import { getSearchedInstructors } from "../../controllers/search/getSearchedInstructors.js";
 
-router.get("/", getSearchedEvent);
+router.get("/", getSearchedInstructors);
 
 export { router };

@@ -1,28 +1,40 @@
 import dayjs from "dayjs";
-import { Event } from "../schemas/events.schema.js";
+import { Instructor } from "../schemas/instructor.schema.js";
 
-export const searchEvent = async (activity, city, date) => {
+export const searchInstructors = async (
+  discipline,
+  city,
+  date,
+  pageLimit,
+  skip
+) => {
   const requestedDate = dayjs(date);
   const endDate = requestedDate.add(7, "day");
 
-  const query = {
+  const eventDateQuery = {
     date: {
       $gte: requestedDate.toDate(),
       $lte: endDate.toDate(),
     },
   };
 
-  if (activity) query.discipline = activity;
-  if (city) query.address = city;
+  const instructorQuery = {};
+  if (discipline) instructorQuery.discipline = discipline;
+  if (city) instructorQuery.city = city;
 
   try {
-    const events = await Event.find(query)
-      .populate("instructorId")
-      .select("city discipline date instructorId");
+    const instructors = await Instructor.find(instructorQuery)
+      .populate({
+        path: "events",
+        match: eventDateQuery,
+      })
+      .select("city discipline date image fullName bio")
+      .skip(skip)
+      .limit(pageLimit);
 
-    return events;
+    return instructors;
   } catch (error) {
-    console.error("Error searching for events:", error);
+    console.error("Error searching for instructors:", error);
     throw error;
   }
 };
