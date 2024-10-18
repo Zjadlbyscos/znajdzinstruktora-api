@@ -1,12 +1,16 @@
 import dayjs from "dayjs";
-import { Instructor } from "../../schemas/instructor.schema.js";
 import { searchInstructors } from "../../services/search.service.js";
+import { ApiError } from "../../utils/errors/apiError.js";
 
 export const getSearchedInstructors = async (req, res, next) => {
   try {
     const { discipline, city, date } = req.query;
 
     const instructors = await searchInstructors(discipline, city, date);
+
+    if (!instructors) {
+      return next(ApiError.notFound("Instructors not found"));
+    }
 
     const filter = {};
     if (discipline) filter.discipline = discipline;

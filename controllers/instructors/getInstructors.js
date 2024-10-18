@@ -1,4 +1,5 @@
 import { Instructor } from "../../schemas/instructor.schema.js";
+import { ApiError } from "../../utils/errors/apiError.js";
 
 export const getAllInstructors = async (req, res, next) => {
   try {
@@ -22,8 +23,6 @@ export const getAllInstructors = async (req, res, next) => {
       .limit(pageLimit);
     const totalInstructors = await Instructor.countDocuments();
     const totalPages = Math.ceil(totalInstructors / pageLimit);
-    console.log(req.query);
-    console.log(instructors);
 
     return res.status(200).json({
       instructors,
