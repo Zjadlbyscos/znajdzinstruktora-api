@@ -1,16 +1,10 @@
-import { Instructor } from "../schemas/instructor.schema";
-import { Rating } from "../schemas/rating.schema";
-import { User } from "../schemas/user.schema";
+import { Instructor } from "../schemas/instructor.schema.js";
+import { Rating } from "../schemas/rating.schema.js";
+import { User } from "../schemas/user.schema.js";
 
 export const rateInstructor = async (instructorId, userId, rating, comment) => {
-  console.log("instructorId", instructorId);
-  console.log("userId", userId);
-  console.log("rating", rating);
-  console.log("comment", comment);
   try {
     const instructor = await Instructor.findById({ _id: instructorId });
-
-    console.log("instructor", instructor);
 
     if (!instructor) {
       return { error: "Instructor not found" };
@@ -35,6 +29,8 @@ export const rateInstructor = async (instructorId, userId, rating, comment) => {
     });
 
     await newRating.save();
+
+    return newRating;
   } catch (error) {
     throw new Error(error);
   }

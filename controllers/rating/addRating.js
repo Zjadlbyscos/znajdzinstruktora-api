@@ -1,5 +1,5 @@
 import { addRatingSchema } from "../../schemas/rating.schema.js";
-import { rateInstructor } from "../../services/instructor.service.js";
+import { rateInstructor } from "../../services/rating.service.js";
 import { ApiError } from "../../utils/errors/apiError.js";
 
 export const addRating = async (req, res, next) => {
