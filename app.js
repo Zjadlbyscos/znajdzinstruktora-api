@@ -11,6 +11,7 @@ import { router as facilitiesRouter } from "./routes/api/objects.js";
 import { router as eventsRouter } from "./routes/api/events.js";
 import { router as upcomingEventsRouter } from "./routes/api/upcomingEvents.js";
 import { router as searchRouter } from "./routes/api/search.js";
+import { router as rateRouter } from "./routes/api/rate.js";
 
 const app = express();
 swagger(app);
@@ -28,6 +29,7 @@ app.use("/api/facilities", facilitiesRouter);
 app.use("/api/events", eventsRouter);
 app.use("/api/upcoming", upcomingEventsRouter);
 app.use("/api/search", searchRouter);
+app.use("/api/rate", rateRouter);
 
 app.use(apiErrorHandler);
 
