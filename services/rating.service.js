@@ -35,3 +35,23 @@ export const rateInstructor = async (instructorId, userId, rating, comment) => {
     throw new Error(error);
   }
 };
+
+export const getRatings = async (instructorId) => {
+  try {
+    const instructor = await Instructor.findById({ _id: instructorId });
+
+    if (!instructor) {
+      return { error: "Instructor not found" };
+    }
+
+    const ratings = await Rating.find({ instructorId });
+
+    if (!ratings) {
+      return { error: "No ratings found" };
+    }
+
+    return ratings;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

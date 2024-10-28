@@ -44,6 +44,9 @@ export const createInstructor = async ({ refUserId }) => {
 
 export const getInstructorId = async (id) => {
   const instructor = await Instructor.findById({ _id: id });
+  const rating = await instructor.calculateAverageRating();
+
+  instructor.rating = rating;
 
   return instructor;
 };
