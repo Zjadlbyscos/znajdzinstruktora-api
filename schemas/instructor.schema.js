@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
 import objectId from "joi-objectid";
+import { Rating } from "./rating.schema.js";
 
 Joi.objectId = objectId(Joi);
 
@@ -71,12 +72,28 @@ const instructorSchema = new Schema(
       type: String,
       default: "instructor",
     },
+    rating: {
+      type: Number,
+      default: 0,
+      ref: "Rating",
+    },
   },
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
 );
+instructorSchema.methods.calculateAverageRating = async function () {
+  const ratings = await Rating.find({ instructorId: this._id });
+  if (ratings.length === 0) return 0;
+
+  const total = ratings.reduce((acc, rating) => acc + rating.rating, 0);
+
+  const average = total / ratings.length;
+  const rounded = Math.round(average * 10) / 10;
+  console.log(rounded, "rounded");
+  return rounded;
+};
 
 export const Instructor = model("Instructor", instructorSchema);
 
