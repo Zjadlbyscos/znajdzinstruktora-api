@@ -26,6 +26,7 @@ export const rateInstructor = async (instructorId, userId, rating, comment) => {
       userId,
       rating,
       comment,
+      userFullName: `${user.firstName} ${user.lastName}`,
     });
 
     await newRating.save();

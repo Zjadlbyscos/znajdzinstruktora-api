@@ -125,6 +125,11 @@ export const upcomingInstructorEvents = async (id, limit, page) => {
       },
     ]).exec();
 
+    if (!events) {
+      console.error("No events found for instructor:", instructor._id);
+      throw new Error("No events found for instructor");
+    }
+
     const total = await Event.countDocuments({
       instructorId: instructor._id,
       date: { $gte: date },

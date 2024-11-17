@@ -23,6 +23,10 @@ const ratingSchema = new Schema(
       type: String,
       default: "",
     },
+    userFullName: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );
