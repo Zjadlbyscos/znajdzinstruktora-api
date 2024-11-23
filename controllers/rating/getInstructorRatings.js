@@ -4,9 +4,8 @@ import { ApiError } from "../../utils/errors/apiError.js";
 export const getInstructorRatings = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { limit = 10, page = 1 } = req.query;
 
-    const rating = await getRatings(id, limit, page);
+    const rating = await getRatings(id);
 
     if (!rating) {
       return next(ApiError.notFound(rating.error));

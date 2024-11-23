@@ -37,34 +37,22 @@ export const rateInstructor = async (instructorId, userId, rating, comment) => {
   }
 };
 
-export const getRatings = async (instructorId, limit, page) => {
+export const getRatings = async (instructorId) => {
   try {
-    const instructor = await Instructor.findById(instructorId);
+    const instructor = await Instructor.findById({ _id: instructorId });
+
     if (!instructor) {
-      throw new Error("Instructor not found");
+      return { error: "Instructor not found" };
     }
 
-    const pageLimit = Math.min(parseInt(limit), 50);
-    const skip = (parseInt(page) - 1) * pageLimit;
+    const ratings = await Rating.find({ instructorId });
 
-    const ratings = await Rating.find({ instructorId })
-      .skip(skip)
-      .limit(pageLimit)
-      .sort({ createdAt: -1 });
+    if (!ratings) {
+      return { error: "No ratings found" };
+    }
 
-    const totalRatings = await Rating.countDocuments({ instructorId });
-
-    return {
-      ratings,
-      pagination: {
-        total: totalRatings,
-        page: parseInt(page, 10),
-        limit: pageLimit,
-      },
-    };
+    return ratings;
   } catch (error) {
-    throw new Error(
-      error.message || "An error occurred while fetching ratings"
-    );
+    throw new Error(error);
   }
 };
